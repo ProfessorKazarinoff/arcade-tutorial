@@ -1,7 +1,7 @@
 # run.py
 
 """
-basic running script to run the game.
+main script to run the game.
 
 From the command line
 
@@ -10,11 +10,12 @@ From the command line
 """
 
 import arcade
-from window import Welcome
+from window import SpaceGame
 
 
 def main():
-    app = Welcome()
+    window = SpaceGame()
+    window.setup()
     arcade.run()
 
 
