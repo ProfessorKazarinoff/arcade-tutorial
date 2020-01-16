@@ -10,7 +10,7 @@ cd arcade-tutorial
 python -m venv venv
 venv\Scritps\activate.bat
 pip install -r requirements.txt
-python arcade_basic.py
+python run.py
 ```
 
 The ```arcade_basic.py``` window should look something like the window below.
