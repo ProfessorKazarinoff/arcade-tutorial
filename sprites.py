@@ -31,3 +31,12 @@ class Coin(arcade.Sprite):
     """Coin class"""
 
     pass
+
+
+class LeftMovingCoin(Coin):
+    """A coin that moves from the right of the screen to the left"""
+
+    def update(self):
+        self.center_x -= 2
+        if self.left < 0:
+            self.left = SCREEN_WIDTH
