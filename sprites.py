@@ -25,3 +25,9 @@ class Player(arcade.Sprite):
             self.bottom = 0
         elif self.top > SCREEN_HEIGHT - 1:
             self.top = SCREEN_HEIGHT
+
+
+class Coin(arcade.Sprite):
+    """Coin class"""
+
+    pass

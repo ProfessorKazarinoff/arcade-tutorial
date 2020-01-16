@@ -7,7 +7,7 @@ import random
 import arcade
 import settings
 import os
-from sprites import Player
+from sprites import Player, Coin
 
 SCREEN_WIDTH = settings.SCREEN_WIDTH
 SCREEN_HEIGHT = settings.SCREEN_HEIGHT
@@ -17,7 +17,11 @@ BACKGROUND_COLOR = settings.BACKGROUND_COLOR
 CIRCLE_COLOR = settings.CIRCLE_COLOR
 SCALING = settings.SCALING
 MOVEMENT_SPEED = settings.MOVEMENT_SPEED
-SPRITE_SCALING = settings.SPRITE_SCALING
+SPRITE_SCALING_PLAYER = settings.SPRITE_SCALING_PLAYER
+SPRITE_SCALING_COIN = settings.SPRITE_SCALING_COIN
+COIN_COUNT = settings.COIN_COUNT
+SCORE_FONT_SIZE = settings.SCORE_FONT_SIZE
+SCORE_FONT_COLOR = settings.SCORE_FONT_COLOR
 
 # Custom Window Class
 
@@ -32,9 +36,12 @@ class SpaceGame(arcade.Window):
 
         self.player_list = None
         self.player_sprite = None
+        self.coin_list = None
         self.enemies_list = arcade.SpriteList
         self.clouds_list = arcade.SpriteList
         self.all_sprites = arcade.SpriteList
+
+        self.score = 0
 
         arcade.set_background_color(arcade.color.AMAZON)
 
@@ -48,23 +55,46 @@ class SpaceGame(arcade.Window):
         """Get game ready to play"""
 
         self.player_list = arcade.SpriteList()
+        self.coin_list = arcade.SpriteList()
         # Set up the player
         self.player_sprite = Player(
-            ":resources:images/space_shooter/playerShip1_orange.png", SPRITE_SCALING
+            ":resources:images/space_shooter/playerShip1_orange.png",
+            SPRITE_SCALING_PLAYER,
         )
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 50
         self.player_list.append(self.player_sprite)
 
+        # Create the coins
+        for i in range(COIN_COUNT):
+            coin = Coin(":resources:images/items/coinGold_ul.png", SPRITE_SCALING_COIN)
+            # position of each coin
+            coin.center_x = random.randrange(SCREEN_WIDTH)
+            coin.center_y = random.randrange(SCREEN_HEIGHT)
+            # add coin to coin list
+            self.coin_list.append(coin)
+
     def on_draw(self):
         """Render the screen"""
         arcade.start_render()
-
+        self.coin_list.draw()
         self.player_list.draw()
+        # put the score on the screen
+        score_text = f"Score: {self.score}"
+        arcade.draw_text(score_text, 10, 20, SCORE_FONT_COLOR, SCORE_FONT_SIZE)
 
     def on_update(self, delta_time: float):
         """Movement and game logic"""
+        self.coin_list.update()
         self.player_list.update()
+        # list of all the sprites the collided with the player
+        coins_hit_list = arcade.check_for_collision_with_list(
+            self.player_sprite, self.coin_list
+        )
+        # Look through each colliding sprite, remove colliding sprite, add 1 to the score
+        for coin in coins_hit_list:
+            coin.remove_from_sprite_lists()
+            self.score += 1
 
     def on_key_press(self, key, modifiers):
         """Called when a key is pressed"""
