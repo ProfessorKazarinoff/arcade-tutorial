@@ -40,3 +40,9 @@ class LeftMovingCoin(Coin):
         self.center_x -= 2
         if self.left < 0:
             self.left = SCREEN_WIDTH
+
+
+class Bomb(arcade.Sprite):
+    """Bomb class"""
+
+    pass

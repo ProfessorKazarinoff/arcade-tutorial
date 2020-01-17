@@ -28,6 +28,9 @@ CIRCLE_COLOR = arcade.color.BLUE
 # Coins
 COIN_COUNT = 50
 
+# Bombs
+BOMB_COUNT = 10
+
 # Score
 SCORE_FONT_SIZE = 14
 SCORE_FONT_COLOR = arcade.color.WHITE_SMOKE

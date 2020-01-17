@@ -5,32 +5,29 @@ A module which contains the custom arcade Window class
 
 import random
 import arcade
-import settings
 import os
-from sprites import Player, Coin
-
-SCREEN_WIDTH = settings.SCREEN_WIDTH
-SCREEN_HEIGHT = settings.SCREEN_HEIGHT
-SCREEN_TITLE = settings.SCREEN_TITLE
-RADIUS = settings.RADIUS
-BACKGROUND_COLOR = settings.BACKGROUND_COLOR
-CIRCLE_COLOR = settings.CIRCLE_COLOR
-SCALING = settings.SCALING
-MOVEMENT_SPEED = settings.MOVEMENT_SPEED
-SPRITE_SCALING_PLAYER = settings.SPRITE_SCALING_PLAYER
-SPRITE_SCALING_COIN = settings.SPRITE_SCALING_COIN
-COIN_COUNT = settings.COIN_COUNT
-SCORE_FONT_SIZE = settings.SCORE_FONT_SIZE
-SCORE_FONT_COLOR = settings.SCORE_FONT_COLOR
+from sprites import Player, Coin, LeftMovingCoin, Bomb
+from settings import (
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    SCREEN_TITLE,
+    BACKGROUND_COLOR,
+    MOVEMENT_SPEED,
+    SPRITE_SCALING_PLAYER,
+    SPRITE_SCALING_COIN,
+    COIN_COUNT,
+    BOMB_COUNT,
+    SCORE_FONT_SIZE,
+    SCORE_FONT_COLOR,
+)
 
 # Custom Window Class
-
-
 class SpaceGame(arcade.Window):
     """The main window which appears then the game is run"""
 
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
@@ -43,13 +40,7 @@ class SpaceGame(arcade.Window):
 
         self.score = 0
 
-        arcade.set_background_color(arcade.color.AMAZON)
-
-    # def on_draw(self):
-    #     arcade.start_render()
-    #     arcade.draw_circle_filled(
-    #         SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, RADIUS, CIRCLE_COLOR
-    #     )
+        arcade.set_background_color(BACKGROUND_COLOR)
 
     def setup(self):
         """Get game ready to play"""
@@ -67,7 +58,9 @@ class SpaceGame(arcade.Window):
 
         # Create the coins
         for i in range(COIN_COUNT):
-            coin = Coin(":resources:images/items/coinGold_ul.png", SPRITE_SCALING_COIN)
+            coin = LeftMovingCoin(
+                ":resources:images/items/coinGold_ul.png", SPRITE_SCALING_COIN
+            )
             # position of each coin
             coin.center_x = random.randrange(SCREEN_WIDTH)
             coin.center_y = random.randrange(SCREEN_HEIGHT)
